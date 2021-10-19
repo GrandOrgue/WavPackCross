@@ -1,0 +1,3 @@
+[submodule "submodules/WavPack"]
+	path = submodules/WavPack
+	url = https://github.com/dbry/WavPack.git
