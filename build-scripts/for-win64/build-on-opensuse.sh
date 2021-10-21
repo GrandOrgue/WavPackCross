@@ -42,7 +42,6 @@ export LDFLAGS="-Wl,--exclude-libs=libintl.a -Wl,--exclude-libs=libiconv.a -Wl,-
 	--mandir=/usr/x86_64-w64-mingw32/sys-root/mingw/share/man \
 	--infodir=/usr/x86_64-w64-mingw32/sys-root/mingw/share/info --disable-static
 
-
 make $PARALLEL_PRMS
 make DESTDIR=$INST_DIR install
 

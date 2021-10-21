@@ -6,20 +6,18 @@ SRC_DIR=`dirname $0`/../..
 PARALLEL_PRMS="-j$(nproc)"
 DEBIAN_PKG_NAME=wavpack-mingw-w64
 VERSION=${1:-4.60.1}
+#VERSION=${1:-5.4.0}
 BUILD_VERSION=${2:-0.go}
 MINGW64_PREFIX=/usr/x86_64-w64-mingw32
-PKG_DIR=`pwd`/build/win64/${DEBIAN_PKG_NAME}_${VERSION}-${BUILD_VERSION}_all
+BUILD_DIR=`pwd`/build/win64
+PKG_DIR=$BUILD_DIR/${DEBIAN_PKG_NAME}_${VERSION}-${BUILD_VERSION}_all
 
+mkdir -p $BUILD_DIR
+rm -rf $BUILD_DIR/*
+cp -Rv $SRC_DIR/submodules/WavPack $BUILD_DIR/src
 
-mkdir -p build/win64
-rm -rf build/win64/*
-cp -Rv $SRC_DIR/wavpack-4.60.1 build/win64/src
-#cp -Rv $SRC_DIR/submodules/WxWidgets build/win64/src
+pushd $BUILD_DIR/src
 
-
-pushd build/win64/src
-
-export LIBPNG16_CONFIG=/usr/x86_64-w64-mingw32/bin/libpng16-config
 export HOST_CC=gcc
 export CC=x86_64-w64-mingw32-gcc
 export CFLAGS="-O2 -g -pipe -Wall -fexceptions --param=ssp-buffer-size=4 -mms-bitfields"
@@ -28,7 +26,7 @@ export CXXFLAGS="-O2 -g -pipe -Wall -fexceptions --param=ssp-buffer-size=4 -mms-
 export PKG_CONFIG_PATH="$MINGW64_PREFIX/lib/pkgconfig:$MINGW64_PREFIX/share/pkgconfig"
 export LDFLAGS="-Wl,--exclude-libs=libintl.a -Wl,--exclude-libs=libiconv.a -Wl,--no-keep-memory -fstack-protector"
 
-./configure --cache-file=mingw64-config.cache \
+./autogen.sh --cache-file=mingw64-config.cache \
 	--host=x86_64-w64-mingw32 \
 	--build=x86_64-suse-linux-gnu \
 	--target=x86_64-w64-mingw32 \
